@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "cli_mechanic"
   spec.version       = CliMechanic::VERSION
   spec.authors       = ["James Short"]
-  spec.email         = ["jshortjr@netapp.com"]
+  spec.email         = ["james.short@alumni.duke.edu"]
   spec.description   = %q{TODO: Write a gem description}
   spec.summary       = %q{TODO: Write a gem summary}
   spec.homepage      = ""
