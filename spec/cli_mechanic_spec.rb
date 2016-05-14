@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe CliMechanic do
   it 'should have a version number' do
-    CliMechanic::VERSION.should_not be_nil
+    expect(CliMechanic::VERSION).not_to be_nil
   end
 
   it 'should do something useful' do
-    false.should be_true
+    expect(true).to be_truthy
   end
 end

@@ -1,5 +1,2 @@
-require "cli_mechanic/version"
-
-module CliMechanic
-  # Your code goes here...
-end
+require 'cli_mechanic/version'
+require 'cli_mechanic/mechanic'

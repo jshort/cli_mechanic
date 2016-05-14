@@ -1,6 +1,24 @@
 # CliMechanic
 
-Ruby gem for scaffolding a robust and consumable CLI tool
+Ruby gem for scaffolding a robust and consumable ruby cli tool.
+
+## Usage
+
+See [cli_config.yml](config/cli_config.yml) for example and documentation for the yaml configuration that is consume by the `cli_mechanic` gem.  This file defines all of your options, arguments and metadata regarding your cli tool.
+
+To utilize this config, simple define an executable ruby script and run the file through the `cli_mechanic` bootstrapper:
+
+    require 'cli_mechanic'
+
+    options = {
+      'filename' => 'default_filename',
+      'verbose' => false,
+      'do_something' => false
+    }
+
+    Mechanic.bootstrap('config/cli_config.yml', ARGV, '0.0.1', options)
+
+Currently `cli_mechanic` only supports boolean and single valued options.  List support, posix-style boolean short flag support, and argument handling coming soon.
 
 ## Installation
 
@@ -15,10 +33,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install cli_mechanic
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Contributing
 
@@ -50,3 +64,4 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+

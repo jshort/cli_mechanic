@@ -1,0 +1,32 @@
+# Cli Mechanic Config
+cli: 
+  description: 
+    - >
+      This tool does really cool things. You might be asking what it does?
+      That is a good question.  It does many things.  One thing is it is great
+      at doing stuff.  All sorts of stuff.  Stuff no one has thought about.
+    - |
+
+      Examples:
+        {{BIN}} --thing=yay --verbose arg1
+
+  usage: "Usage: {{BIN}} [options] arg [args]"
+  options:
+    - name: help
+      short: -h
+      long: --help
+      message: Show this message.
+    - name: version
+      short: -v
+      long: --version
+      message: Show {{BIN}} version.
+    - name: filename
+      short: -f
+      long: --filename FNAME
+      message: Filename on which to operate.
+    - name: do_something
+      short: -d
+      long: --do_it
+      message: Should do it?
+  version: 0.0.1
+  debug: false
