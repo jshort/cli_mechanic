@@ -22,8 +22,21 @@ cli:
       message: Show {{BIN}} version.
     - name: filename
       short: -f
-      long: --filename FNAME
+      long: --filename
+      arg:
+        name: FNAME
+        required: true # default should be true
       message: Filename on which to operate.
+    - name: inplace
+      short: -i
+      long: --inplace
+      arg:
+        name: EXT
+        required: false
+      #message: Do inplace (with extension)
+    - name: verbose
+      long: --[no-]verbose
+      message: Log verbosely?
     - name: do_something
       short: -d
       long: --do_it

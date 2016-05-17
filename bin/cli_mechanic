@@ -3,8 +3,8 @@
 require 'cli_mechanic'
 
 options = {
-  'filename' => 'default filename',
-  'do_something' => false
+  'filename' => 'default_filename',
+  #'do_something' => false
 }
 
 Mechanic.bootstrap('config/cli_config.yml', ARGV, nil, options)

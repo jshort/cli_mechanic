@@ -42,9 +42,24 @@ class Mechanic
         OptionHandler.handle_option(x, @@mechanic, opt, options)
       end
     end
-    op.parse!(ARGV)
+
+    begin
+      op.parse!(ARGV)
+    rescue OptionParser::InvalidOption,
+           OptionParser::MissingArgument,
+           OptionParser::NeedlessArgument,
+           OptionParser::AmbiguousOption
+      puts "###############  #{$!.to_s}  ###############"
+      puts ""
+      puts op
+      exit 1
+    end
 
     options
+  end
+
+  def self.validate(config_file)
+    puts new(load_yaml(config_file)).validate
   end
 
   def self.load_yaml(file)
@@ -54,7 +69,7 @@ class Mechanic
     end
 
     begin
-      yaml = YAML.load_file(file) 
+      yaml = YAML.load_file(file)
     rescue Psych::SyntaxError => e
       puts "Invalid YAML: #{e.message}"
       exit 9
@@ -74,11 +89,12 @@ class Mechanic
     @bin_name
   end
 
-  def validate(config_file)
+  def validate(config_file = nil)
     unless @config
       @config = load_yaml(config_file)
     end
     ConfigValidator.validate(@config)
+    'Config is Valid!'
   end
 
   def set_version(config_version, arg_version)
