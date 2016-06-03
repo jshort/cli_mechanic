@@ -7,6 +7,8 @@ class Mechanic
 
   DEFAULT_HELP_WIDTH = 80
   DEFAULT_VERSION = '0.0.1'
+  USAGE_PREFIX = 'Usage: {{BIN}}'
+  FIXNUM_MAX = 2**(0.size * 8 - 2) - 1
 
   def initialize(config)
     @bin_name = $PROGRAM_NAME.split('/').last
@@ -27,11 +29,7 @@ class Mechanic
     puts @@mechanic.conf if @@mechanic.debug?
 
     op = OptionParser.new do |x|
-      if @@mechanic.usage
-        x.banner = @@mechanic.usage
-      else
-        x.banner = "Usage: #{@@mechanic.bin} [OPTIONS] ARGS"
-      end
+      x.banner = @@mechanic.usage
 
       x.separator ''
       x.separator @@mechanic.description
@@ -45,6 +43,7 @@ class Mechanic
 
     begin
       op.parse!(ARGV)
+      @@mechanic.validate_args(ARGV)
     rescue OptionParser::InvalidOption,
            OptionParser::MissingArgument,
            OptionParser::NeedlessArgument,
@@ -80,13 +79,20 @@ class Mechanic
   # The following instance methods are for all intents and purposes
   # private since ::new is private and only our class methods can
   # instantiate an instance of the class and call said methods.
-
   def conf
     @config['cli']
   end
 
   def bin
     @bin_name
+  end
+
+  def options
+    conf['options']
+  end
+
+  def arguments
+    conf['arguments']
   end
 
   def validate(config_file = nil)
@@ -125,14 +131,57 @@ class Mechanic
   end
 
   def usage
-    conf['usage'].gsub('{{BIN}}', @bin_name)
+    usage_msg = USAGE_PREFIX
+    usage_msg.gsub!('{{BIN}}', @bin_name)
+    if options
+      usage_msg << ' [options]'
+    end
+    if arguments
+      usage_msg << "#{arg_usage}"
+    end
   end
 
-  # Private classes
-  # class OptionParser end
+  def arg_usage
+    arg_str = ''
+    arguments.each do |arg|
+      cur_arg = ''
+      if arg['required'] == false
+        cur_arg = " [#{arg['name']}{{MULTI}}]"
+      else
+        cur_arg = " #{arg['name']}{{MULTI}}"
+      end
 
-  # class ArgumentParser end
-  # private_constant :OptionParser, :ArgumentParser
+      if arg['type'] == 'single'
+        cur_arg.gsub!('{{MULTI}}', '')
+      else
+        cur_arg.gsub!('{{MULTI}}', '...')
+      end
+      arg_str << cur_arg
+    end
+    arg_str
+  end
+
+  def validate_args(argv)
+    min, max = 0, 0
+    arguments.each do |arg|
+      if arg['required'] == false && arg['type'] == 'single'
+        max += 1
+      elsif arg['required'] == false && arg['type'] == 'multiple'
+        max = FIXNUM_MAX
+      elsif arg['required'] != false && arg['type'] == 'single'
+        min += 1
+        max += 1
+      end
+    end
+
+    if argv.size < min
+      raise OptionParser::MissingArgument
+    end
+
+    if argv.size > max
+      raise OptionParser::NeedlessArgument
+    end
+  end
 
   # new is private hence only our ::bootstrap method can
   private_class_method :new, :load_yaml

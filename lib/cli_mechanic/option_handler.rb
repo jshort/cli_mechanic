@@ -4,12 +4,12 @@ module OptionHandler
     opt = Option.new(option, mechanic.bin)
 
     if opt.name == 'help'
-      parser.on(*opt.parser_args) do
+      parser.on_tail(*opt.parser_args) do
         puts parser
         exit 0
       end
     elsif opt.name == 'version'
-      parser.on(*opt.parser_args) do
+      parser.on_tail(*opt.parser_args) do
         puts "#{mechanic.bin} version #{mechanic.version}"
         exit 0
       end

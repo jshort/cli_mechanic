@@ -10,3 +10,5 @@ options = {
 Mechanic.bootstrap('config/cli_config.yml', ARGV, nil, options)
 
 puts "Parsed options are #{options}"
+
+puts "Arguments are #{ARGV}"

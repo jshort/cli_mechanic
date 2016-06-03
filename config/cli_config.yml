@@ -1,6 +1,6 @@
 # Cli Mechanic Config
-cli: 
-  description: 
+cli:
+  description:
     - >
       This tool does really cool things. You might be asking what it does?
       That is a good question.  It does many things.  One thing is it is great
@@ -10,7 +10,9 @@ cli:
       Examples:
         {{BIN}} --thing=yay --verbose arg1
 
-  usage: "Usage: {{BIN}} [options] arg [args]"
+  #usage: "Usage: {{BIN}} [options] arg [args]"
+  version: 0.0.1
+  debug: false
   options:
     - name: help
       short: -h
@@ -41,5 +43,11 @@ cli:
       short: -d
       long: --do_it
       message: Should do it?
-  version: 0.0.1
-  debug: false
+  arguments:
+    - name: arg
+      type: single
+    - name: other
+      type: single
+    - name: files
+      type: multiple
+      required: false
